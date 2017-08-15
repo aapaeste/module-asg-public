@@ -12,6 +12,8 @@ The main modules are:
 
 * [asg-rolling-deploy](/modules/asg-rolling-deploy): This module creates an ASG that can do a zero-downtime rolling 
   deployment. 
+* [server-group](/modules/server-group): Run a fixed-size cluster of servers that can automatically attach EBS Volumes 
+  and ENIs, do zero-downtime rolling deployment, and automatically replace failed servers.
 
 Click on each module above to see its documentation. Head over to the [examples](/examples) folder for examples.
 
