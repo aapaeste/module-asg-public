@@ -39,6 +39,7 @@ To use this module, you need to do the following:
 
 1. [Add the module to your Terraform code](#add-the-module-to-your-terraform-code)
 1. [Optionally create an ENI and EBS Volume for each server](#optionally-create-an-eni-and-ebs-volume-for-each-server)
+1. [If you created ENIs, optionally create DNS records](#if-you-created-enis-optionally-create-dns-records)
 1. [Optionally integrate a load balancer for health checks](#optionally-integrate-a-load-balancer-for-health-checks)
 1. [Attach an ENI and EBS Volume during boot](#attach-an-eni-and-ebs-volume-during-boot)
 
@@ -156,6 +157,35 @@ Each ENI and server pair will get a matching `eni-xxx` tag (e.g., `eni-0`, `eni-
 pair will get a matching `ebs-volume-xxx` tag (e.g., `ebs-volume-0`, `ebs-volume-1`, etc). You will need to attach 
 these ENIs and Volumes while your server is booting, as described in the next section.
 
+### If you created ENIs, optionally create DNS records
+
+You may wish to have a DNS record associated with each ENI. This has the special advantage that even if a server is
+replaced, the new server will attach the existing ENI and retain the same IP address! This means that the DNS record
+will be permanently valid as long the Server Group size does not shrink. 
+
+If you would like to create DNS records, set the `route53_hosted_zone_id` parameter to the Route53 Hosted Zone where DNS records
+should be created and the `dns_name_common_portion` parameter to the common portion of the DNS name to be shared by each server in the 
+Server Group. For example:
+
+```hcl
+module "servers" {
+  source = "git::git@github.com:gruntwork-io/module-asg.git//modules/server-group?ref=v0.3.1"
+  
+  # (other params omitted)
+    
+  size = 3
+  route53_hosted_zone_id = "<obtain-this-from-another-terraform-module>"
+  dns_name = "kafka.internal"
+}
+```
+
+will create the following DNS records that point to each ENI:
+
+```
+0.kafka.internal
+1.kafka.internal
+2.kafka.internal
+```  
 
 ### Attach an ENI and EBS Volume during boot
 
