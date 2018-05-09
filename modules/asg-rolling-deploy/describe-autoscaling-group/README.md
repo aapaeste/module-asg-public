@@ -50,7 +50,7 @@ To update to version `VERSION` of boto:
 1. Remove the previous version:
 
     ```
-    rm -rf boto3-1.4.4.zip
+    rm -rf boto3-1.7.10.zip
     ```
 
 1. Use `pip` to install the new version of boto, along with all of its dependencies, into a local folder:
@@ -59,6 +59,8 @@ To update to version `VERSION` of boto:
     mkdir boto3-<VERSION>
     cd boto3-<VERSION>
     pip install -t . boto3
+    
+    # Note you may need to use pip3 instead of pip
     ```
 
 1. Compress the contents of the folder into a zip file and delete the folder:
